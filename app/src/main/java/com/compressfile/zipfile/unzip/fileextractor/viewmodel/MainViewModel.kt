@@ -1,11 +1,16 @@
 package com.compressfile.zipfile.unzip.fileextractor.viewmodel
 
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.compressfile.zipfile.unzip.fileextractor.model.FileItem
 import com.compressfile.zipfile.unzip.fileextractor.repository.FileHelper
+import com.compressfile.zipfile.unzip.fileextractor.repository.StorageHelper
 
 class MainViewModel : ViewModel() {
 
@@ -16,6 +21,8 @@ class MainViewModel : ViewModel() {
     var inputPath = Environment.getExternalStorageDirectory().path + "/ZipDemo/"
     var inputFile = "Apply.zip"
     var outputPath = Environment.getExternalStorageDirectory().path + "/UnZipDemo/"
+
+    val fileList = MutableLiveData<ArrayList<FileItem>>()
 
      fun unzipFile(context: Context) {
         Log.d("zipManager", "unzipFile: ${zipPath + inputFile}")
@@ -48,5 +55,13 @@ class MainViewModel : ViewModel() {
         if (FileHelper.unzip(zipPath + "dummy1.zip", unzipPath)) {
             Toast.makeText(context, "Unzip successfully.", Toast.LENGTH_LONG).show()
         }
+    }
+
+    fun getStorageExtFiles(context: Context,arrayOf: Array<String>) {
+        fileList.postValue(StorageHelper.getSpecificExtFiles(context,arrayOf))
+    }
+
+    fun getStorageFiles(context: Context,externalContentUri: Uri) {
+        fileList.postValue(StorageHelper.getFilesWithUri(context ,externalContentUri))
     }
 }

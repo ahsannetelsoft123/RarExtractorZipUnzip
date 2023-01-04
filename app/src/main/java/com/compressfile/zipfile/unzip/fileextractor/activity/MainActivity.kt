@@ -1,6 +1,8 @@
 package com.compressfile.zipfile.unzip.fileextractor.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.compressfile.zipfile.unzip.fileextractor.databinding.ActivityMainBinding
@@ -25,9 +27,6 @@ class MainActivity : AppCompatActivity() {
 
         initViewModel()
         initViews()
-
-//        getStorageExtFiles(arrayOf("jpg","mp4"))
-//        getStorageFiles(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
     }
 
     private fun initViewModel() {
@@ -35,6 +34,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        binding.compressFiles.setOnClickListener {
+            startActivity(Intent(this,FilePickerActivity::class.java))
+        }
         binding.zipFile.setOnClickListener {
             viewModel.zipFile(this)
         }
